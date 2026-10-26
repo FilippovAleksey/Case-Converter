@@ -14,8 +14,23 @@ dependencies {
     intellijPlatform {
         intellijIdea("2026.2")
         testFramework(TestFrameworkType.Platform)
+        // Java нужен для интеграционных тестов поиска ссылок, а не коду плагина.
+        bundledPlugin("com.intellij.java")
+        testFramework(TestFrameworkType.Plugin.Java)
 
-        // Add plugin dependencies for compilation here:
+        // Языковой модуль нужен в runIde и интеграционных тестах .py.
+        // Это зависимость окружения разработки, а не обязательный depends в plugin.xml:
+        // установленный Case Converter продолжает работать в IDE без Python.
         compatiblePlugin("PythonCore")
+
+        // Только общая платформа: конвертер не зависит от языка кода.
+    }
+}
+
+kotlin { jvmToolchain(25) }
+
+intellijPlatform {
+    pluginConfiguration {
+        ideaVersion { sinceBuild = "262" }
     }
 }

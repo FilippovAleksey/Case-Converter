@@ -1,33 +1,30 @@
-<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
     <id>me.filippov.case-converter</id>
-
-    <!-- Public plugin name should be written in Title Case.
-     Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-name -->
-    <name>Case-converter</name>
-
-    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor url="https://www.yourcompany.com">YourCompany</vendor>
-
-    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
-         Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-description -->
+    <name>Case Converter</name>
+    <vendor>Filippov</vendor>
     <description><![CDATA[
-        Enter short description for your plugin here.<br>
-        <em>most HTML tags may be used</em>
-        ]]></description>
-
-    <!-- Product and plugin compatibility requirements.
-         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
-    <depends>PythonCore</depends>
-
-    <resource-bundle>messages.MyMessageBundle</resource-bundle>
-
-    <!-- Extensions defined by the plugin.
-         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+        Renames symbols to snake_case or camelCase using IDE Rename Refactoring.
+        Includes configurable conversion rules and local usage statistics with charts.
+        Переименование символов с обновлением ссылок, настройки и локальная статистика.
+    ]]></description>
+    <!-- Общий редактор платформы: зависимость от Python не нужна. -->
+    <depends>com.intellij.modules.lang</depends>
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="MyToolWindow" factoryClass="me.filippov.MyToolWindowFactory"
-                    icon="AllIcons.Toolwindows.ToolWindowPalette"/>
+        <applicationConfigurable id="me.filippov.caseconverter.settings"
+            parentId="tools" displayName="Case Converter"
+            instance="me.filippov.caseconverter.SettingsConfigurable"/>
+        <toolWindow id="Case Converter" anchor="right"
+            factoryClass="me.filippov.caseconverter.StatisticsToolWindowFactory"
+            icon="AllIcons.Toolwindows.ToolWindowPalette"/>
     </extensions>
-
+    <actions>
+        <!-- Эти ID доступны в Settings → Keymap для назначения горячих клавиш. -->
+        <group id="CaseConverter.Menu" text="Case Converter" popup="true">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <action id="CaseConverter.ToSnakeCase" text="Переименовать символ в snake_case…"
+                class="me.filippov.caseconverter.ToSnakeCaseAction"/>
+            <action id="CaseConverter.ToCamelCase" text="Переименовать символ в camelCase…"
+                class="me.filippov.caseconverter.ToCamelCaseAction"/>
+        </group>
+    </actions>
 </idea-plugin>

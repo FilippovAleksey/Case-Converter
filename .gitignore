@@ -22,3 +22,6 @@ gradle-app.setting
 
 .idea
 .intellijPlatform
+.kotlin/
+*.iml
+out/
